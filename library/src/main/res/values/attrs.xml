@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FocusView">
+        <attr name="corner_border" format="dimension" />
+        <attr name="border_width" format="dimension" />
+        <attr name="center_apex" format="dimension" />/*中心点到顶点距离*/
+        <attr name="normal_border_color" format="color" />
+        <attr name="focus_border_color" format="color" />
+        <attr name="centerX" format="dimension" />
+        <attr name="centerY" format="dimension" />
+        <attr name="shape" format="enum">
+            <enum name="rectangle" value="0" />
+            <enum name="circle" value="1" />
+            <enum name="hexagon" value="2" />
+            <enum name="Octagon" value="3" />
+
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="FocusViewThemes">
+        <attr name="focusViewStyle" format="reference" />
+    </declare-styleable>
+
+
+    <declare-styleable name="ScaleProgressBar">
+        <attr name="progress_current" format="integer" />
+        <attr name="progress_max" format="integer" />
+
+        <attr name="progress_unreached_color" format="color" />
+        <attr name="progress_reached_color" format="color" />
+
+        <attr name="progress_reached_bar_height" format="dimension" />
+        <attr name="progress_unreached_bar_height" format="dimension" />
+
+        <attr name="progress_text_size" format="dimension" />
+        <attr name="progress_text_color" format="color" />
+
+        <attr name="progress_text_visibility" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ScaleProgressBarThemes">
+        <attr name="scaleProgressBarStyle" format="reference" />
+    </declare-styleable>
+
+</resources>
