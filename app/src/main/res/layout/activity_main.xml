@@ -17,7 +17,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="100dp"
         app:progress_max="40"
-        app:progress_current="20"
+        app:progress_current="15"
         android:layout_width="300dp"
         android:layout_height="40dp"/>
 </RelativeLayout>
