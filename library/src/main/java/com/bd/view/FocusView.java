@@ -9,9 +9,12 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -128,8 +131,36 @@ public class FocusView extends View {
 
     private float mBeforeAnimCenterApex;
 
-    public void focus(long focusDuration) {
+    private int mState;
 
+    private final int STATE_FOCUS = 0x01;
+
+    private final int STATE_RELEASE = 0x02;
+
+    private final int DESTROY_TOKEN = 0x07;
+
+    private Handler finishHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == DESTROY_TOKEN) {
+                ((ViewGroup) getParent()).removeView(FocusView.this);
+            }
+        }
+    };
+
+    public synchronized void setState(int state) {
+        mState = state;
+        notifyStateChanged();
+    }
+
+    public void notifyStateChanged() {
+        finishHandler.removeMessages(DESTROY_TOKEN);
+    }
+
+
+    public synchronized void focus(long focusDuration) {
+        setState(STATE_FOCUS);
+        sendDestroyMessage();
         final ScaleAnimation animation = new ScaleAnimation(1f, 0.8f, 1f, 0.8f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setDuration(200l);
@@ -139,18 +170,36 @@ public class FocusView extends View {
         setFocus(focusDuration + 200l);
     }
 
+    public void sendDestroyMessage(){
+        finishHandler.sendEmptyMessageDelayed(DESTROY_TOKEN,2000l);
+    }
+
     public void setFocus(long focusDuration) {
         new Handler(getContext().getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 mBorderPaint.setColor(mFocusBorderColor);
-                FocusView.this.invalidate();
+                FocusView.this.postInvalidate();
+                if (android.os.Build.VERSION.SDK_INT < 20) {
+                    FocusView.this.setScaleX(0.8f);
+                    FocusView.this.setScaleY(0.8f);
+                }
             }
         }, focusDuration);
+
+    }
+
+    public void destroy() {
+
     }
 
 
-    public void release() {
+    public synchronized void release() {
+        setState(STATE_RELEASE);
+        if (android.os.Build.VERSION.SDK_INT < 20) {
+            FocusView.this.setScaleX(1.0f);
+            FocusView.this.setScaleY(1.0f);
+        }
         this.clearAnimation();
         mBorderPaint.setColor(mNormalBorderColor);
     }
