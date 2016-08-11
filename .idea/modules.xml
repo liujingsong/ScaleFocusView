@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/FocusScaleView-lib/FocusScaleView-lib.iml" filepath="$PROJECT_DIR$/FocusScaleView-lib/FocusScaleView-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/ScaleFocusView.iml" filepath="$PROJECT_DIR$/ScaleFocusView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>
   </component>
 </project>

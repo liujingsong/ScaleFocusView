@@ -157,8 +157,13 @@ public class FocusView extends View {
         finishHandler.removeMessages(DESTROY_TOKEN);
     }
 
+    private OnFocusListener mFocusListener;
 
-    public synchronized void focus(long focusDuration) {
+    public void setFocusListener(OnFocusListener listener) {
+        this.mFocusListener = listener;
+    }
+
+    public synchronized void focus(float x, float y, long focusDuration) {
         setState(STATE_FOCUS);
         sendDestroyMessage();
         final ScaleAnimation animation = new ScaleAnimation(1f, 0.8f, 1f, 0.8f,
@@ -168,10 +173,13 @@ public class FocusView extends View {
         animation.setInterpolator(new AccelerateDecelerateInterpolator());
         this.startAnimation(animation);
         setFocus(focusDuration + 200l);
+        if (null != this.mFocusListener) {
+            this.mFocusListener.onFocus(x, y);
+        }
     }
 
-    public void sendDestroyMessage(){
-        finishHandler.sendEmptyMessageDelayed(DESTROY_TOKEN,2000l);
+    public void sendDestroyMessage() {
+        finishHandler.sendEmptyMessageDelayed(DESTROY_TOKEN, 3000l);
     }
 
     public void setFocus(long focusDuration) {
@@ -186,10 +194,6 @@ public class FocusView extends View {
                 }
             }
         }, focusDuration);
-
-    }
-
-    public void destroy() {
 
     }
 
@@ -269,7 +273,7 @@ public class FocusView extends View {
                 return true;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                focus(500l);
+                focus(event.getX(), event.getY(), 500l);
                 return true;
         }
 
